@@ -14,13 +14,13 @@ st.title("Telcos Database🗄️")
 @st.cache_resource(show_spinner="connecting to database ....")
 def init_connection():
     return pyodbc.connect(
-        "DRIVER = {SQL Server};SERVER= "
+        "DRIVER = {SQL Server}: SERVER= "
         + st.secrets["server"]
         +"; DATABASE="
         + st.secrets["database"]
         + "; UID="
         + st.secrets["username"]
-        + ";PWD="
+        + "; PWD="
         + st.secrets["password"]
     )
 connection = init_connection()
