@@ -1,3 +1,2 @@
 /churnapp_env
-/.streamlit
-/.streamlit
+/.streamlit/secret.toml

@@ -7,3 +7,4 @@ st.set_page_config(
 )
 
 st.title("Dashboard")
+st.write("This Dashboard gives users the opportunity to understand and derive insights from the Telcos Dataset")
