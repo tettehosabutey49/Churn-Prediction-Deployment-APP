@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "models",
+			"path": "../../Churning Project/NotebookChurn/models"
+		},
+		{
+			"name": "Churn-Prediction-Deployment-APP",
+			"path": ".."
+		}
+	],
+	"settings": {}
+}

@@ -16,7 +16,7 @@ data_info = {
                "PhoneService", "MultipleLines", "InternetService", "OnlineSecurity", 
                "Online Backup", "Device Protection", "Tech SUpport", "StreamingTV", "Streaming Movies", "Contract", "Paperless Billing", "Payment Method", "Montly Charges", "Total Charges", "Churn"],
     "Description": ["Unique Customer ID", "Male or Female", "0, 1, 2, 3", "Yes or No", "Yes or No", "Yes or No", "Number of Years at company", "Yes or No", 
-                    "Yes or No", "Yes or No", "DSL, Fiber Optic", "Yes or No", "Yes or No", "Yes or No", "Yes or No","One Year, Month to Moth, Two years", "Yes or No", "Mailed Check, Credit card, Electronic check, Bank transfer", 
+                    "Yes or No", "Yes or No", "DSL, Fiber Optic, No ", "Yes or No", "Yes or No", "Yes or No", "Yes or No","One Year, Month to Moth, Two years", "Yes or No", "Mailed Check, Credit card, Electronic check, Bank transfer", 
                     "Charges per month", "total charges throughout contract", "Yes or No"    
                     ]
 }
@@ -79,3 +79,18 @@ else:
 
 
 st.write(df_filtered)
+
+# Create a section header
+st.markdown("<h2 style='font-size:24px;'>Upload csv file here</h2>", unsafe_allow_html=True)
+
+# Allow users to upload a CSV file
+uploaded_file = st.file_uploader("Choose a CSV file", type=['csv'])
+
+# If a file is uploaded
+if uploaded_file is not None:
+    # Read the CSV file into a DataFrame
+    df = pd.read_csv(uploaded_file)
+    
+    # Display the DataFrame
+    st.write("Uploaded Data:")
+    st.write(df)
