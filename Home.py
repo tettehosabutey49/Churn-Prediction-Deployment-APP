@@ -14,12 +14,12 @@ col1, col2, col3 = st.columns(3)
 
 # About column
 with col1:
-    st.header("About")
+    st.write("##### About")
     st.write("This Telco Churn Prediction App is designed to help telecom companies reduce churn and improve customer retention. By leveraging advanced machine learning algorithms, the app provides valuable insights into customer behavior, allowing companies to implement targeted retention strategies.")
 
 # Key Features column
 with col2:
-    st.header("Key Features")
+    st.write("##### Key Features")
     st.write("- Extraction of data from a SQL Server database")
     st.write("- Option to upload and use external data files")
     st.write("- Predicting Churn based on customer data provided")
@@ -29,12 +29,12 @@ with col2:
 
 # How to Use column
 with col3:
-    st.header("How to Use")
+    st.write("##### How to Use")
     st.write("1. **Input Data**: Provide customer data such as demographics and usage.")
     st.write("2. **Run the Prediction Model**: Click on the 'Run Prediction' button to generate churn predictions.")
     st.write("3. **Interpret Results**: Review the churn predictions and take appropriate action to retain customers.")
 
-st.header("Benefits to Telecom Companies")
+st.write("##### Benefits to Telecom Companies")
 st.write("- **Churn Prediction**: Predict which customers are likely to churn.")
 st.write("- **Customer Segmentation**: Segment customers based on churn likelihood for targeted retention strategies.")
 st.write("- **Retention Strategies**: Offer personalized discounts, upgrades, or better service to retain customers.")
@@ -42,3 +42,10 @@ st.write("- **Cost Savings**: Save on acquiring new customers by retaining exist
 st.write("- **Improved Customer Satisfaction**: Increase satisfaction by addressing customer needs.")
 st.write("- **Competitive Advantage**: Stand out by offering better service and personalized offerings.")
 st.write("- **Data-Driven Decision Making**: Make informed decisions based on customer behavior and preferences.")
+st.write(" ")
+st.write(" ")
+st.write(" ")
+
+st.write("##### Useful Links and Information")
+st.link_button(label="Link to my GitHub repository to access the Telcos Churn ML Deployment Application", url="https://github.com/tettehosabutey49/Churn-Prediction-Deployment-APP")
+st.link_button(label="Link to my GitHub repository to access the Telcos Churn ML Project from scratch", url="https://github.com/tettehosabutey49/Telco-Customer-Churn-Prediction-using-Machine-Learning")

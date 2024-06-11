@@ -22,21 +22,42 @@ def load_XGBoost_pipeline():
     return pipeline
 
 def select_model():
-    col1, col2 = st.columns(2)
+    col1, col2, col3,col4 = st.columns(4)
 
     with col1:
         user_choice = st.selectbox("Select a model to use", options=["XGBoost🚀", "Random Forest🌲"], key="selected_model")
     with col2: 
         if user_choice == "XGBoost🚀":
-            st.write("###### Metrics of XGBoost🚀")
-            st.write("Precision = 81%")
-            st.write("F1_score = 77.5%")
-            st.write("Optimal threshold = 0.024")
+            st.write("###### XGBoost Metrics🎯✨")
+            st.metric(label= "Precision🎯✨", value="81%" )
         else: 
-            st.write("##### Metrics of Random Forest🌲")
-            st.write("Precision = 82.4%")
-            st.write("F1_score = 77%")
-            st.write("Optimal Threshold = 0.284")
+            st.write("##### Forest Metrics✨")
+            st.write(" ")
+            st.metric(label= "Precision🎯✨", value="82.4%" )
+
+    with col3:
+        if user_choice == "XGBoost🚀":
+            st.write(" ")
+            st.write(" ")
+            st.metric(label = "F1_score⚖️" , value="77.5%")
+        else: 
+            st.write(" ")
+            st.write(" ")
+            st.write(" ")
+            st.write(" ")
+            st.metric(label = "F1_score⚖️" , value="77%")
+
+    with col4: 
+        if user_choice == "XGBoost🚀":
+            st.write(" ")
+            st.write(" ")
+            st.metric(label = "Optimal Threshold🎚️" , value="0.024")
+        else :
+            st.write(" ")
+            st.write(" ")
+            st.write(" ")
+            st.write(" ")
+            st.metric(label="Optimal Threshold🎚️", value="0.284")
         
     if st.session_state["selected_model"] == "XGBoost🚀":
         pipeline = load_XGBoost_pipeline()
@@ -130,11 +151,15 @@ if "probability" not in st.session_state:
 # Run the Streamlit app
 if __name__ == "__main__":
     display_form()
-    st.write(st.session_state)
+
+    #muting the session state
+    #st.write(st.session_state)
     
     final_prediction = st.session_state["prediction"]
 
     if final_prediction is not None:
         st.divider()
-        st.write(f"Prediction: {final_prediction[0]}")
+        if final_prediction == "Yes": 
+            st.write(f"Prediction: {final_prediction[0]}")
+            st.write(f' This customer is lively to Churn')
         st.write(f"Probability: {st.session_state['probability'][0]}")
