@@ -41,7 +41,7 @@ palette_dict = {False: "grey", True: "brown", "Yes": "brown", "No": "grey"}
 #st.write("#### Contract Type by Churn")
 fig, ax = plt.subplots(figsize=(5, 3))
 sns.countplot(data=filtered_df, x="Contract", hue="Churn", palette=palette_dict, ax=ax)
-ax.set_title('Contract Type by Churn', fontsize=8)  # Adjust the font size as needed
+ax.set_title('Churn by Contract Type', fontsize=8)  # Adjust the font size as needed
 ax.set_xlabel('Contract Type', fontsize=6)
 st.pyplot(fig)
 st.write(" ")
@@ -80,7 +80,7 @@ with col2:
     #st.write("#### Payment Method Distribution by Churn")
     fig3, ax3 = plt.subplots()
     sns.countplot(data=df, x="PaymentMethod", hue="Churn", palette={"No": "grey", "Yes": "brown"})
-    ax3.set_title('Payment Method Distribution by Churn')
+    ax3.set_title('Churn by Payment Method Distribution')
     plt.xticks(rotation=50)
     st.pyplot(fig3)
 
