@@ -16,10 +16,12 @@ def load_forest_pipeline():
     pipeline = joblib.load("./models/Random_Forest.pkl")
     return pipeline
 
+
 @st.cache_resource
 def load_XGBoost_pipeline():
     pipeline = joblib.load("./models/XGBoost.pkl")
     return pipeline
+
 
 def select_model():
     col1, col2, col3,col4 = st.columns(4)
@@ -68,6 +70,7 @@ def select_model():
     encoder = joblib.load("./models/label_encoder.pkl")
     return pipeline, encoder
 
+
 def make_prediction(pipeline, encoder):
     gender = st.session_state["gender"]
     senior_citizen = st.session_state["senior_citizen"]
@@ -110,6 +113,7 @@ def make_prediction(pipeline, encoder):
     st.session_state["prediction"] = prediction
     st.session_state["probability"] = probability
 
+
 def display_form():
     pipeline, encoder = select_model()
 
@@ -142,7 +146,7 @@ def display_form():
 
         st.form_submit_button("Submit", on_click=make_prediction, kwargs=dict(pipeline=pipeline, encoder=encoder))
 
-# Initialize session state for prediction and probability
+# Initializing session state for prediction and probability
 if "prediction" not in st.session_state:
     st.session_state["prediction"] = None
 if "probability" not in st.session_state:
@@ -161,5 +165,12 @@ if __name__ == "__main__":
         st.divider()
         if final_prediction == "Yes": 
             st.write(f"Prediction: {final_prediction[0]}")
-            st.write(f' This customer is lively to Churn')
-        st.write(f"Probability: {st.session_state['probability'][0]}")
+            st.write(f' This customer is likely to Churn')
+            st.write(f"Probability: {st.session_state['probability'][0]}")
+        else: 
+            st.write(f"Prediction: {final_prediction[0]}")
+            st.write(f' This customer is not likely to Churn')
+            st.write(f"Probability: {st.session_state['probability'][0]}")
+          
+            
+
