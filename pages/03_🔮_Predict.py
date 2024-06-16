@@ -2,6 +2,7 @@ import streamlit as st
 import joblib
 import pandas as pd
 import xgboost
+import datetime
 
 # Set page configuration
 st.set_page_config(
@@ -110,6 +111,22 @@ def make_prediction(pipeline, encoder):
     st.session_state["prediction"] = prediction
     st.session_state["probability"] = probability
 
+    probability_of_yes = st.session_state["probability"][0][1]
+    probability_of_no = st.session_state["probability"][0][0]
+
+    if final_prediction == "No":
+        probability = [round(probability_of_no, 2)]  # Use square brackets for a list
+        #st.session_state["prediction"] = prediction[0][0]
+    else:
+        probability = [round(probability_of_yes, 2)]  # Use square brackets for a list
+        #st.session_state["probability"] = probability[0][1]
+
+
+    df["prediction"] = prediction
+    df["probability"] = probability[0]
+    df["time_of_prediction"] = datetime.date.today()
+    df["model_used"] = st.session_state["selected_model"]    
+
 def display_form():
     pipeline, encoder = select_model()
 
@@ -162,4 +179,8 @@ if __name__ == "__main__":
         if final_prediction == "Yes": 
             st.write(f"Prediction: {final_prediction[0]}")
             st.write(f' This customer is lively to Churn')
-        st.write(f"Probability: {st.session_state['probability'][0]}")
+            st.write(f"Probability of this customer chruning is: {round(st.session_state['probability'][0][1]*100, 2)}%")
+        else:
+            st.write(f"Prediction: {final_prediction[0]}")
+            st.write(f' This customer is not lively to Churn')
+            st.write(f"Probability of this customer not churning is : {round(st.session_state['probability'][0][0]*100, 2)}%")
