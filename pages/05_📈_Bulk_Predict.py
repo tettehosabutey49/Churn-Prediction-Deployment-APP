@@ -4,11 +4,11 @@ import pandas as pd
 
 # Set page configuration
 st.set_page_config(
-    page_title="Predict Page",
-    page_icon="🔮",
+    page_title="Bulk Predict Page",
+    page_icon="📈",
     layout="wide"
 )
-st.title("Bulk Customer Churn Prediction")
+st.title("Bulk Customer Churn Prediction📈")
 
 @st.cache_resource
 def load_forest_pipeline():
@@ -21,7 +21,7 @@ def load_XGBoost_pipeline():
     return pipeline
 
 def select_model():
-    col1, col2, col3,col4 = st.columns(4)
+    col1, col2, col3, col4 = st.columns(4)
 
     with col1:
         user_choice = st.selectbox("Select a model to use", options=["XGBoost🚀", "Random Forest🌲"], key="selected_model")
@@ -68,7 +68,7 @@ def select_model():
     return pipeline, encoder
 
 
-def make_prediction(pipeline, encoder, data):
+def make_bulk_prediction(pipeline, encoder, data):
     file_extension = data.name.split('.')[-1].lower()
     
     if file_extension == 'csv':
@@ -79,19 +79,23 @@ def make_prediction(pipeline, encoder, data):
         df = pd.read_json(data)
     else:
         st.error("Unsupported file format")
-        return None, None
+        return None
+    
 
-    pred = pipeline.predict(df)
-    pred_int = int(pred[0])
-    prediction = encoder.inverse_transform([pred_int])
-    probability = pipeline.predict_proba(df)
-    return prediction, probability
+    # Make predictions
+    preds = pipeline.predict(df)
+    preds_decoded = encoder.inverse_transform(preds)
+    probabilities = pipeline.predict_proba(df)[:, 1]
 
-# Initialize session state for prediction and probability
-if "prediction" not in st.session_state:
-    st.session_state["prediction"] = None
-if "probability" not in st.session_state:
-    st.session_state["probability"] = None
+    # Add predictions and probabilities to the DataFrame
+    df['Prediction'] = preds_decoded
+    df['Probability'] = probabilities
+
+    return df
+
+# Initialize session state for prediction
+if "prediction_df" not in st.session_state:
+    st.session_state["prediction_df"] = None
 
 # Run the Streamlit app
 if __name__ == "__main__":
@@ -101,21 +105,12 @@ if __name__ == "__main__":
         uploaded_file = st.file_uploader("Upload your dataset", type=None)
         if uploaded_file is not None:
             if st.button("Predict"):
-                prediction, probability = make_prediction(pipeline, encoder, uploaded_file)
-                if prediction.size > 0 and probability.size > 0:
-                    st.session_state["prediction"] = prediction
-                    st.session_state["probability"] = probability
-                    st.success("Prediction made successfully")
+                prediction_df = make_bulk_prediction(pipeline, encoder, uploaded_file)
+                if prediction_df is not None:
+                    st.session_state["prediction_df"] = prediction_df
+                    st.success("Predictions made successfully")
 
-    final_prediction = st.session_state["prediction"]
-
-    if final_prediction is not None:
+    if st.session_state["prediction_df"] is not None:
         st.divider()
-        if final_prediction == "Yes": 
-            st.write(f"Prediction: {final_prediction[0]}")
-            st.write(f' This customer is likely to Churn')
-            st.write(f"Probability of this customer churning is: {round(st.session_state['probability'][0][1]*100, 2)}%")
-        else:
-            st.write(f"Prediction: {final_prediction[0]}")
-            st.write(f' This customer is not likely to Churn')
-            st.write(f"Probability of this customer not churning is : {round(st.session_state['probability'][0][0]*100, 2)}%")
+        st.write("Predictions:")
+        st.write(st.session_state["prediction_df"])

@@ -1,87 +1,121 @@
 import streamlit as st
-import matplotlib.pyplot as plt
-import pyodbc
+import joblib
 import pandas as pd
-import seaborn as sns
 
+# Set page configuration
 st.set_page_config(
-    page_title = "Dashboard Page",
-    page_icon="📊",
+    page_title="Bulk Predict Page",
+    page_icon="📈",
     layout="wide"
 )
+st.title("Bulk Customer Churn Prediction📈")
 
-st.title("Churn Prediction Dashboard📊")
-st.write("Welcome to the Telcos Dataset Dashboard! 🚀 Explore insightful visualizations and uncover trends in customer churn and behavior. Use the filters to dive deeper into contract types, gender distribution, and more. Let's discover valuable insights together! 📊")
+@st.cache_resource
+def load_forest_pipeline():
+    pipeline = joblib.load("./models/Random_Forest.pkl")
+    return pipeline
 
-# Load your data
-df = pd.read_csv('Data/clean_df.csv')
-df.dropna(inplace=True)
+@st.cache_resource
+def load_XGBoost_pipeline():
+    pipeline = joblib.load("./models/XGBoost.pkl")
+    return pipeline
 
-# Streamlit app
-#st.title("Churn Prediction Dashboard")
+def select_model():
+    col1, col2, col3,col4 = st.columns(4)
 
-# Create sidebar filters
-selected_gender = st.sidebar.selectbox("Select Gender", ['All'] + df['gender'].unique().tolist())
-selected_churn = st.sidebar.selectbox("Select Churn Status", ['All'] + df['Churn'].unique().tolist())
-selected_contract = st.sidebar.selectbox("Select Contract Type", ['All'] + df['Contract'].unique().tolist())
+    with col1:
+        user_choice = st.selectbox("Select a model to use", options=["XGBoost🚀", "Random Forest🌲"], key="selected_model")
+    with col2: 
+        if user_choice == "XGBoost🚀":
+            st.write("###### XGBoost Metrics🎯✨")
+            st.metric(label= "Precision🎯✨", value="81%" )
+        else: 
+            st.write("##### Forest Metrics✨")
+            st.write(" ")
+            st.metric(label= "Precision🎯✨", value="82.4%" )
 
-# Filter data based on selections
-filtered_df = df.copy()
-if selected_gender != 'All':
-    filtered_df = filtered_df[filtered_df['gender'] == selected_gender]
-if selected_churn != 'All':
-    filtered_df = filtered_df[filtered_df['Churn'] == selected_churn]
-if selected_contract != 'All':
-    filtered_df = filtered_df[filtered_df['Contract'] == selected_contract]
+    with col3:
+        if user_choice == "XGBoost🚀":
+            st.write(" ")
+            st.write(" ")
+            st.metric(label = "F1_score⚖️" , value="77.5%")
+        else: 
+            st.write(" ")
+            st.write(" ")
+            st.write(" ")
+            st.write(" ")
+            st.metric(label = "F1_score⚖️" , value="77%")
 
-# Define palette dictionary
-palette_dict = {False: "grey", True: "brown", "Yes": "brown", "No": "grey"}
-
-# Plot Contract Type by Churn
-#st.write("#### Contract Type by Churn")
-fig, ax = plt.subplots(figsize=(5, 3))
-sns.countplot(data=filtered_df, x="Contract", hue="Churn", palette=palette_dict, ax=ax)
-ax.set_title('Contract Type by Churn', fontsize=8)  # Adjust the font size as needed
-ax.set_xlabel('Contract Type', fontsize=6)
-st.pyplot(fig)
-st.write(" ")
-st.write(" ")
-
-# Create two columns for visuals
-col1, col2 = st.columns(2)
-
-# Create a pie chart in the first column
-with col1:
-    #st.write("#### Churn Distribution")
-    fig1, ax1 = plt.subplots()
-    churn_counts = filtered_df['Churn'].value_counts()
-    explode = tuple([0.05] * len(churn_counts))  # Explode each slice by 0.05
-    ax1.pie(churn_counts, labels=churn_counts.index, autopct='%1.1f%%', explode=explode, colors=['brown', 'grey'])
-    ax1.set_title('Churn Distribution')
-    st.pyplot(fig1)
-
-    st.write(" ")
-    fig4, ax4 = plt.subplots()
-    sns.countplot(data=df, x="SeniorCitizen", hue="Churn",palette={"No":"grey", "Yes":"Brown"})
-    ax4.set_title('Churn by SeniorCitizen')
-    plt.xticks(rotation=50)
-    st.pyplot(fig4)
+    with col4: 
+        if user_choice == "XGBoost🚀":
+            st.write(" ")
+            st.write(" ")
+            st.metric(label = "Optimal Threshold🎚️" , value="0.024")
+        else :
+            st.write(" ")
+            st.write(" ")
+            st.write(" ")
+            st.write(" ")
+            st.metric(label="Optimal Threshold🎚️", value="0.284")
+        
+    if st.session_state["selected_model"] == "XGBoost🚀":
+        pipeline = load_XGBoost_pipeline()
+    else: 
+        pipeline = load_forest_pipeline()
+        
+    st.success("Model loaded successfully")
+    encoder = joblib.load("./models/label_encoder.pkl")
+    return pipeline, encoder
 
 
-# Create a bar chart in the second column
-with col2:
-    #st.write("#### Churn Distribution by Gender")
-    fig2, ax2 = plt.subplots()
-    gender_churn_counts = filtered_df.groupby("gender")["Churn"].value_counts().unstack().fillna(0)
-    gender_churn_counts.plot(kind='bar', stacked=True, ax=ax2, color=['brown','grey'])
-    ax2.set_title('Churn Distribution by Gender')
-    st.pyplot(fig2)
-
-    #st.write("#### Payment Method Distribution by Churn")
-    fig3, ax3 = plt.subplots()
-    sns.countplot(data=df, x="PaymentMethod", hue="Churn", palette={"No": "grey", "Yes": "brown"})
-    ax3.set_title('Payment Method Distribution by Churn')
-    plt.xticks(rotation=50)
-    st.pyplot(fig3)
-
+def make_prediction(pipeline, encoder, data):
+    file_extension = data.name.split('.')[-1].lower()
     
+    if file_extension == 'csv':
+        df = pd.read_csv(data)
+    elif file_extension in ['xls', 'xlsx']:
+        df = pd.read_excel(data)
+    elif file_extension == 'json':
+        df = pd.read_json(data)
+    else:
+        st.error("Unsupported file format")
+        return None, None
+
+    pred = pipeline.predict(df)
+    pred_int = int(pred[0])
+    prediction = encoder.inverse_transform([pred_int])
+    probability = pipeline.predict_proba(df)
+    return prediction, probability
+
+# Initialize session state for prediction and probability
+if "prediction" not in st.session_state:
+    st.session_state["prediction"] = None
+if "probability" not in st.session_state:
+    st.session_state["probability"] = None
+
+# Run the Streamlit app
+if __name__ == "__main__":
+    pipeline, encoder = select_model()
+
+    if st.checkbox("Do you want to make a prediction?"):
+        uploaded_file = st.file_uploader("Upload your dataset", type=None)
+        if uploaded_file is not None:
+            if st.button("Predict"):
+                prediction, probability = make_prediction(pipeline, encoder, uploaded_file)
+                if prediction.size > 0 and probability.size > 0:
+                    st.session_state["prediction"] = prediction
+                    st.session_state["probability"] = probability
+                    st.success("Prediction made successfully")
+
+    final_prediction = st.session_state["prediction"]
+
+    if final_prediction is not None:
+        st.divider()
+        if final_prediction == "Yes": 
+            st.write(f"Prediction: {final_prediction[0]}")
+            st.write(f' This customer is likely to Churn')
+            st.write(f"Probability of this customer churning is: {round(st.session_state['probability'][0][1]*100, 2)}%")
+        else:
+            st.write(f"Prediction: {final_prediction[0]}")
+            st.write(f' This customer is not likely to Churn')
+            st.write(f"Probability of this customer not churning is : {round(st.session_state['probability'][0][0]*100, 2)}%")

@@ -10,8 +10,8 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("Churn Prediction Dashboard📊")
-st.write("Welcome to the Telcos Dataset Dashboard! 🚀 Explore insightful visualizations and uncover trends in customer churn and behavior. Use the filters to dive deeper into contract types, gender distribution, and more. Let's discover valuable insights together! 📊")
+# st.title("Churn Prediction Dashboard📊")
+# st.write("Welcome to the Telcos Dataset Dashboard! 🚀 Explore insightful visualizations and uncover trends in customer churn and behavior. Use the filters to dive deeper into contract types, gender distribution, and more. Let's discover valuable insights together! 📊")
 
 # Load your data
 df = pd.read_csv('Data/clean_df.csv')
@@ -40,6 +40,7 @@ if dashboard_selection == 'EDA Dashboard':
     
     # EDA Dashboard
     st.subheader("Exploratory Data Analysis (EDA) Dashboard")
+    st.write("Welcome to the Telcos Dataset Dashboard! 🚀 Explore insightful visualizations and uncover trends in customer churn and behavior. Use the filters to dive deeper into contract types, gender distribution, and more. Let's discover valuable insights together! 📊")
     
     # Plot Contract Type by Churn
     fig, ax = plt.subplots(figsize=(5, 3))
@@ -97,6 +98,7 @@ if dashboard_selection == 'EDA Dashboard':
 else:
     # KPI Dashboard
     st.subheader("Key Performance Indicators (KPI) Dashboard")
+    st.write("This KPI Dashboard provides a comprehensive overview of the model's performance. It includes confusion matrices, ROC curves, and analyses of threshold effects. By fine-tuning these thresholds, we aim to enhance the model's ability to accurately predict the number of customers likely to churn, thereby improving overall prediction accuracy and business decision-making.")
     col3, col4, col5, col6 = st.columns(4)
     with col3: 
         st.write("###### XGBoost Metrics🎯✨")
@@ -113,16 +115,27 @@ else:
         st.write(" ")
         st.metric(label = "F1_score⚖️", value="76.9%")
     image = Image.open("others/roc_curve.png")
-    st.image(image, caption='ROC_Curve', use_column_width=True)
+    st.image(image, caption="ROC_Curve", use_column_width=True)
 
     col1, col2 = st.columns(2)
 
     with col1:
         image1 = Image.open('others/confusion_matrix_random_forest.png')
-        st.image(image1, caption='Confusion_Matrix_RF', use_column_width=True)
+        st.image(image1, use_column_width=True)
 
     with col2:
         image3 = Image.open('others\confusion_matrix_xgboost.png')
-        st.image(image3, caption='Confusion_Matrix_XGBoost', use_column_width=True)
+        st.image(image3,  use_column_width=True)
 
+    st.write(" ")
+    st.write("#### Confusion Matrix of Models At Optimal Thresholds")
 
+    col7, col8 = st.columns(2)
+
+    with col7:
+        image1 = Image.open('others\confusion_matrix_RF_TH_0.284).png')
+        st.image(image1,  use_column_width=True)
+
+    with col8:
+        image3 = Image.open('others\confusion_matrix_xgboost_TH_0.024).png')
+        st.image(image3, use_column_width=True)

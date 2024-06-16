@@ -3,6 +3,7 @@ import joblib
 import pandas as pd
 import xgboost
 import datetime
+import os
 
 # Set page configuration
 st.set_page_config(
@@ -125,7 +126,12 @@ def make_prediction(pipeline, encoder):
     df["prediction"] = prediction
     df["probability"] = probability[0]
     df["time_of_prediction"] = datetime.date.today()
-    df["model_used"] = st.session_state["selected_model"]    
+    df["model_used"] = st.session_state["selected_model"]   
+
+    df.to_csv("./Data/history.csv", mode="a", header=not os.path.exists("./Data/history.csv"))
+    return prediction, probability                                                                    
+                         
+
 
 def display_form():
     pipeline, encoder = select_model()
