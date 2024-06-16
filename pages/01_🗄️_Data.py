@@ -44,6 +44,7 @@ def init_connection():
 
 connection = init_connection()
 
+
 @st.cache_data(show_spinner="Running query...")
 def running_query(query):
     with connection.cursor() as cursor:
@@ -56,6 +57,7 @@ def get_all_column():
     sql_query = """SELECT * FROM LP2_Telco_churn_first_3000"""
     df = running_query(sql_query)
     return df
+
 
 st.markdown("<h2 style='font-size:24px;'>Full Dataset</h2>", unsafe_allow_html=True)
 # Main script to display the data
