@@ -2,3 +2,14 @@
 0,Male,0,Yes,Yes,0,Yes,Yes,DSL,Yes,Yes,Yes,Yes,Yes,Yes,Month-to-month,Yes,Electronic check,18,3804,Yes,0.59,2024-06-16,XGBoost🚀
 0,Male,0,Yes,Yes,0,Yes,Yes,DSL,Yes,Yes,Yes,Yes,Yes,Yes,Month-to-month,Yes,Electronic check,94,3804,Yes,0.62,2024-06-16,XGBoost🚀
 0,Female,0,Yes,Yes,0,Yes,Yes,DSL,Yes,Yes,Yes,Yes,Yes,Yes,Month-to-month,Yes,Electronic check,18,18,Yes,0.57,2024-06-16,XGBoost🚀
+0,Male,0,Yes,Yes,60,Yes,Yes,DSL,Yes,Yes,Yes,Yes,Yes,Yes,Two year,Yes,Electronic check,40,6621,No,0.03,2024-06-16,XGBoost🚀
+0,Female,0,Yes,Yes,30,Yes,Yes,DSL,Yes,Yes,Yes,Yes,Yes,Yes,Month-to-month,Yes,Electronic check,74,5156,No,0.37,2024-06-19,Random Forest🌲
+0,Male,0,Yes,Yes,0,Yes,Yes,DSL,Yes,Yes,Yes,Yes,Yes,Yes,Month-to-month,Yes,Electronic check,18,18,Yes,0.58,2024-06-19,XGBoost🚀
+0,Male,0,Yes,Yes,0,Yes,Yes,DSL,Yes,Yes,Yes,Yes,Yes,Yes,Month-to-month,Yes,Electronic check,18,18,Yes,0.58,2024-06-19,XGBoost🚀
+0,Male,1,Yes,Yes,0,Yes,Yes,DSL,Yes,Yes,Yes,Yes,Yes,Yes,Month-to-month,Yes,Electronic check,18,18,Yes,0.64,2024-06-19,XGBoost🚀
+0,Female,1,No,Yes,35,Yes,Yes,DSL,Yes,Yes,Yes,No,Yes,Yes,Month-to-month,Yes,Electronic check,119,8672,Yes,0.52,2024-06-19,XGBoost🚀
+0,Female,0,No,Yes,35,Yes,Yes,DSL,Yes,Yes,Yes,No,Yes,Yes,Two year,Yes,Electronic check,119,8672,No,0.31,2024-06-19,XGBoost🚀
+0,Female,0,No,Yes,35,Yes,Yes,DSL,Yes,Yes,Yes,No,Yes,Yes,Two year,Yes,Electronic check,119,8672,No,0.69,2024-06-19,XGBoost🚀
+0,Female,1,No,Yes,35,Yes,Yes,DSL,Yes,Yes,Yes,No,Yes,Yes,Two year,Yes,Electronic check,119,8672,No,0.68,2024-06-19,XGBoost🚀
+0,Male,1,Yes,Yes,0,Yes,Yes,DSL,Yes,Yes,Yes,Yes,Yes,Yes,Month-to-month,Yes,Electronic check,18,18,Yes,0.64,2024-06-19,XGBoost🚀
+0,Male,1,Yes,Yes,0,Yes,Yes,DSL,Yes,Yes,Yes,Yes,Yes,Yes,Month-to-month,Yes,Electronic check,18,18,Yes,0.64,2024-06-19,XGBoost🚀

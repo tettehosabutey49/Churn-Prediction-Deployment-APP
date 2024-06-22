@@ -141,7 +141,7 @@ def display_form():
     
         with col1:
             gender = st.selectbox("What is your Gender?", options=["Male", "Female"], key="gender")
-            senior_citizen = st.selectbox("What is your senior citizen level?", options=[0, 1, 2, 3], key="senior_citizen")
+            senior_citizen = st.select_slider("What is your senior citizen level?", options=range(0,4,1), key="senior_citizen")
             partner = st.selectbox("Do you have a Partner?", options=["Yes", "No"], key="partner")
             dependents = st.selectbox("Have you got any dependents?", options=["Yes", "No"], key="dependents")
             tenure = st.select_slider("How many years have you spent at the company?", options=range(0, 75, 1), key="tenure")
