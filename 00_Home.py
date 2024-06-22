@@ -23,15 +23,16 @@ with col2:
     st.write("- Extraction of data from a SQL Server database")
     st.write("- Option to upload and use external data files")
     st.write("- Predicting Churn based on customer data provided")
-    st.write("- Data Visualization for deriving insights about the customers.")
+    st.write("- Data Visualization for EDA and KPIs")
     st.write("- History page for recording previous predictions made")
+    st.write("- Bulk Prediction page for prediction of large data sets")
 
 
-# How to Use column
+# Using columns
 with col3:
     st.write("##### How to Use")
     st.write("1. **Input Data**: Provide customer data such as demographics and usage.")
-    st.write("2. **Run the Prediction Model**: Click on the 'Run Prediction' button to generate churn predictions.")
+    st.write("2. **Run the Prediction Model**: Click on the 'Submit' button to generate churn predictions.")
     st.write("3. **Interpret Results**: Review the churn predictions and take appropriate action to retain customers.")
 
 st.write("##### Benefits to Telecom Companies")
