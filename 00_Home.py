@@ -28,7 +28,7 @@ if st.session_state["authentication_status"]:
     authenticator.logout(location="sidebar") 
 
     st.title("Telecom Churn Prediction Application")
-    st.image("others\Customer-Churn.png", caption="", use_column_width=True)
+    st.image("others/Customer-Churn.png", caption="", use_column_width=True)
 
     # Set up three columns
     col1, col2, col3 = st.columns(3)
