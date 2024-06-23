@@ -145,7 +145,7 @@ if st.session_state["authentication_status"]:
             st.image(image1, use_column_width=True)
 
         with col2:
-            image3 = Image.open('others\confusion_matrix_xgboost.png')
+            image3 = Image.open('others/confusion_matrix_xgboost.png')
             st.image(image3,  use_column_width=True)
 
         st.write(" ")
@@ -154,11 +154,11 @@ if st.session_state["authentication_status"]:
         col7, col8 = st.columns(2)
 
         with col7:
-            image1 = Image.open('others\confusion_matrix_RF_TH_0.284).png')
+            image1 = Image.open('others/confusion_matrix_RF_TH_0.284).png')
             st.image(image1,  use_column_width=True)
 
         with col8:
-            image3 = Image.open('others\confusion_matrix_xgboost_TH_0.024).png')
+            image3 = Image.open('others/confusion_matrix_xgboost_TH_0.024).png')
             st.image(image3, use_column_width=True)
 
 elif st.session_state["authentication_status"] is False:
