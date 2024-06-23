@@ -1,6 +1,9 @@
 import streamlit as st
 import pyodbc
 import pandas as pd
+import streamlit_authenticator as stauth
+import yaml
+from yaml.loader import SafeLoader
 
 st.set_page_config(
     page_title="Data Page",
@@ -8,91 +11,66 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("Telcos Database🗄️")
+with open('config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
 
-# Creating a DataFrame for data information
-data_info = {
-    "Column": ["CustomerID", "Gender", "SeniorCitizen", "Partner", "Dependents", "Tenure", 
-               "PhoneService", "MultipleLines", "InternetService", "OnlineSecurity", 
-               "Online Backup", "Device Protection", "Tech SUpport", "StreamingTV", "Streaming Movies", "Contract", "Paperless Billing", "Payment Method", "Montly Charges", "Total Charges", "Churn"],
-    "Description": ["Unique Customer ID", "Male or Female", "0, 1, 2, 3", "Yes or No", "Yes or No", "Yes or No", "Number of Years at company", "Yes or No", 
-                    "Yes or No", "Yes or No", "DSL, Fiber Optic, No ", "Yes or No", "Yes or No", "Yes or No", "Yes or No","One Year, Month to Moth, Two years", "Yes or No", "Mailed Check, Credit card, Electronic check, Bank transfer", 
-                    "Charges per month", "total charges throughout contract", "Yes or No"    
-                    ]
-}
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['pre-authorized']
+)
 
-df_info = pd.DataFrame(data_info)
+name, authentication_status, username =authenticator.login(location="sidebar")
 
-# Displaying the DataFrame as a table
-st.text("Data Information")
-st.table(df_info)
+if st.session_state["authentication_status"]:
+    authenticator.logout(location="sidebar") 
+    st.title("Telcos Database🗄️")
 
-## Creating a connection to the database 
-## Querying the database
-@st.cache_resource(show_spinner="Connecting to database...")
-def init_connection():
-    return pyodbc.connect(
-        "DRIVER={SQL Server};SERVER="
-        + st.secrets["server"]
-        + ";DATABASE="
-        + st.secrets["database"]
-        + ";UID="
-        + st.secrets["username"]
-        + ";PWD="
-        + st.secrets["password"]
-    )
+    df = pd.read_csv('Data/clean_df.csv')
 
-connection = init_connection()
+    st.markdown("<h2 style='font-size:24px;'>Full Dataset</h2>", unsafe_allow_html=True)
+    # Main script to display the data
+    #df = get_all_column()
+    #st.write(df)
+    selection = st.selectbox("Select...", options=["All columns", "Numerical columns", "Categorical columns"])
 
+    # Define numerical and categorical columns
+    numerical_columns = ["tenure", "MonthlyCharges", "TotalCharges"]
+    categorical_columns = ["gender", "Partner", "SeniorCitizen","Dependents", "PhoneService", "MultipleLines", "InternetService", "OnlineSecurity", 
+                        "OnlineBackup", "DeviceProtection", "TechSupport", "StreamingTV", "StreamingMovies", "Contract", "PaperlessBilling", 
+                        "PaymentMethod", "Churn"]
 
-@st.cache_data(show_spinner="Running query...")
-def running_query(query):
-    with connection.cursor() as cursor:
-        cursor.execute(query)
-        rows = cursor.fetchall()
-        df = pd.DataFrame.from_records(rows, columns=[column[0] for column in cursor.description])
-    return df
-
-def get_all_column():
-    sql_query = """SELECT * FROM LP2_Telco_churn_first_3000"""
-    df = running_query(sql_query)
-    return df
+    # Filter the DataFrame based on user selection
+    if selection == "Numerical columns":
+        df_filtered = df[numerical_columns]
+    elif selection == "Categorical columns":
+        df_filtered = df[categorical_columns]
+    else:
+        df_filtered = df
 
 
-st.markdown("<h2 style='font-size:24px;'>Full Dataset</h2>", unsafe_allow_html=True)
-# Main script to display the data
-df = get_all_column()
-#st.write(df)
-selection = st.selectbox("Select...", options=["All columns", "Numerical columns", "Categorical columns"])
+    st.write(df_filtered)
 
-# Define numerical and categorical columns
-numerical_columns = ["tenure", "MonthlyCharges", "TotalCharges"]
-categorical_columns = ["customerID", "gender", "Partner", "SeniorCitizen","Dependents", "PhoneService", "MultipleLines", "InternetService", "OnlineSecurity", 
-                       "OnlineBackup", "DeviceProtection", "TechSupport", "StreamingTV", "StreamingMovies", "Contract", "PaperlessBilling", 
-                       "PaymentMethod", "Churn"]
+    # Create a section header
+    st.markdown("<h2 style='font-size:24px;'>Upload csv file here</h2>", unsafe_allow_html=True)
 
-# Filter the DataFrame based on user selection
-if selection == "Numerical columns":
-    df_filtered = df[numerical_columns]
-elif selection == "Categorical columns":
-    df_filtered = df[categorical_columns]
-else:
-    df_filtered = df
+    # Allow users to upload a CSV file
+    uploaded_file = st.file_uploader("Choose a CSV file", type=['csv'])
 
+    # If a file is uploaded
+    if uploaded_file is not None:
+        # Read the CSV file into a DataFrame
+        df = pd.read_csv(uploaded_file)
+        
+        # Display the DataFrame
+        st.write("Uploaded Data:")
+        st.write(df)
 
-st.write(df_filtered)
-
-# Create a section header
-st.markdown("<h2 style='font-size:24px;'>Upload csv file here</h2>", unsafe_allow_html=True)
-
-# Allow users to upload a CSV file
-uploaded_file = st.file_uploader("Choose a CSV file", type=['csv'])
-
-# If a file is uploaded
-if uploaded_file is not None:
-    # Read the CSV file into a DataFrame
-    df = pd.read_csv(uploaded_file)
-    
-    # Display the DataFrame
-    st.write("Uploaded Data:")
-    st.write(df)
+elif st.session_state["authentication_status"] is False:
+    st.error("Wrong username/password")
+elif st.session_state["authentication_status"] is None:
+    st.info("Please login to access the website")
+    st.write("username: emmanuel")
+    st.write("password: 00000")
