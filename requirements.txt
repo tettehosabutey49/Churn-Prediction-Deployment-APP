@@ -212,3 +212,5 @@ xgboost==2.0.3
 xxhash==3.4.1
 yarl==1.9.4
 zipp==3.18.1
+pytz==2023.3.post1
+pywin32==305
