@@ -1,5 +1,6 @@
 import streamlit as st
 import joblib
+import imblearn
 import pandas as pd
 import streamlit_authenticator as stauth
 import yaml
