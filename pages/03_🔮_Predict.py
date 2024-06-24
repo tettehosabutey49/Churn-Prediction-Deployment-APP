@@ -162,7 +162,7 @@ if st.session_state["authentication_status"]:
         
             with col1:
                 gender = st.selectbox("What is your Gender?", options=["Male", "Female"], key="gender")
-                senior_citizen = st.select_slider("What is your senior citizen level?", options=range(0,4,1), key="senior_citizen")
+                senior_citizen = st.select_slider("What is your senior citizen level?", options=range(0,2,1), key="senior_citizen") ## senior citizen levels are supposed to be 4 here. Work on it later
                 partner = st.selectbox("Do you have a Partner?", options=["Yes", "No"], key="partner")
                 dependents = st.selectbox("Have you got any dependents?", options=["Yes", "No"], key="dependents")
                 tenure = st.select_slider("How many years have you spent at the company?", options=range(0, 75, 1), key="tenure")
