@@ -8,8 +8,7 @@ Welcome to my project repository, where I explore the Telco customer churn predi
 - Dashboard page : Provides stakeholders the opportunity to visualize EDA and related information on metrics
 - Predict page: Gives stakeholders the opportunity to select various combination of features and models to predict whether a customer will churn or not with the probability churning or not churning
 - History page : Provides stakeholders the historic data on old predictions made.
-- Bulk prediction : This page gives a bulk prediction option, allowing stakholders to upload their data sets and obtain predictions of the entire dataset.
-
+- Bulk prediction : This page gives a bulk prediction option, allowing stakholders to upload their data sets and obtain predictions of the entire dataset. To use bulk prediction, make sure your dataset has the same structure as the dataframe on the data page. You can use the demo_df.csv file in the data folder in my repository just for demonstration purposes.
 
 ## Key Insights
 ### Data Exploration
