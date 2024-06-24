@@ -125,6 +125,7 @@ if st.session_state["authentication_status"]:
 
         if st.checkbox("Do you want to make a prediction?"):
             uploaded_file = st.file_uploader("Upload your dataset", type=None)
+            st.write("For demo purposes, you can use the demo_df.csv file in my data folder in my repository")
             if uploaded_file is not None:
                 if st.button("Predict"):
                     prediction_df = make_bulk_prediction(pipeline, encoder, uploaded_file)
